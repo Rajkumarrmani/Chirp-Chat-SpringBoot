@@ -1,9 +1,10 @@
 plugins {
-	alias(libs.plugins.kotlin.jvm)
+	id("chirp.spring-boot-app")
+	/*alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.kotlin.spring)
 	alias(libs.plugins.spring.boot)
 	alias(libs.plugins.spring.dependency.management)
-	alias(libs.plugins.kotlin.jpa)
+	alias(libs.plugins.kotlin.jpa)*/
 }
 
 group = "com.rk"
@@ -23,7 +24,14 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+
+	implementation(projects.user)
+	implementation(projects.chat)
+	implementation(projects.notification)
+	implementation(projects.common)
+
+	/*implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -40,7 +48,7 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.amqp:spring-rabbit-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")*/
 }
 
 kotlin {

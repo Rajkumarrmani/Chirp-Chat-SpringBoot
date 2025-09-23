@@ -1,5 +1,6 @@
 package com.rk.learningchirp
 
+import Test
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -7,5 +8,6 @@ import org.springframework.boot.runApplication
 class LearningChirpApplication
 
 fun main(args: Array<String>) {
+	Test()
 	runApplication<LearningChirpApplication>(*args)
 }
