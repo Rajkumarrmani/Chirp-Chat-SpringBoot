@@ -1,6 +1,6 @@
-package com.rk.user.infra.database.entities
+package com.rk.learningchirp.infra.database.entities
 
-import com.rk.user.domain.model.UserId
+import com.rk.learningchirp.domain.model.UserId
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp

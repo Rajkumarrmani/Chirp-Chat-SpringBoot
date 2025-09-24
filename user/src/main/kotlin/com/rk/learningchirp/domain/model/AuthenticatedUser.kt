@@ -1,4 +1,4 @@
-package com.rk.user.domain.model
+package com.rk.learningchirp.domain.model
 
 data class AuthenticatedUser(
     val user: String,
