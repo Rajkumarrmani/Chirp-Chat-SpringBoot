@@ -1,17 +1,29 @@
 package com.rk.learningchirp.service.auth
 
+import com.rk.learningchirp.domain.exception.InvalidCredentialsException
 import com.rk.learningchirp.domain.exception.UserAlreadyExistsException
+import com.rk.learningchirp.domain.exception.UserNotFoundException
+import com.rk.learningchirp.domain.model.AuthenticatedUser
 import com.rk.learningchirp.domain.model.User
+import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.infra.database.entities.RefreshTokenEntity
 import com.rk.learningchirp.infra.database.entities.UserEntity
 import com.rk.learningchirp.infra.database.mappers.toUser
+import com.rk.learningchirp.infra.database.repositories.RefreshTokenRepository
 import com.rk.learningchirp.infra.database.repositories.UserRepository
 import com.rk.learningchirp.infra.security.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.security.MessageDigest
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 @Service
 class AuthService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtService: JwtService,
+    private val refreshTokenRepository: RefreshTokenRepository
 ) {
     fun register(email: String, username: String, password: String): User {
         val user = userRepository.findByEmailOrUsername(
@@ -19,7 +31,7 @@ class AuthService(
             username = password.trim()
         )
 
-        if(user != null) throw UserAlreadyExistsException()
+        if (user != null) throw UserAlreadyExistsException()
 
         val savedUser = userRepository.save(
             UserEntity(
@@ -30,5 +42,51 @@ class AuthService(
         ).toUser()
 
         return savedUser
+    }
+
+    fun login(
+        email: String,
+        password: String
+    ): AuthenticatedUser {
+        val user = userRepository.findByEmail(email.trim())
+            ?: throw InvalidCredentialsException()
+
+        if (!passwordEncoder.matches(password, user.hashedPassword)) {
+            throw InvalidCredentialsException()
+        }
+
+        return user.id?.let { userId ->
+            val accessToken = jwtService.generateAccessToken(userId)
+            val refreshToken = jwtService.generateRefreshToken(userId)
+
+            storeRefreshToken(userId, refreshToken)
+
+            AuthenticatedUser(
+                user = user.toUser(),
+                accessToken = accessToken,
+                refreshToken = refreshToken
+            )
+        } ?: throw UserNotFoundException()
+    }
+
+
+    private fun storeRefreshToken(userId: UserId, token: String) {
+        val hashed = hashToken(token)
+        val expiryMs = jwtService.refreshTokenValidityMs
+        val expiresAt = Instant.now().plusMillis(expiryMs)
+
+        refreshTokenRepository.save(
+            RefreshTokenEntity(
+                userId = userId,
+                expiresAt = expiresAt,
+                hashedToken = hashed
+            )
+        )
+    }
+
+    private fun hashToken(token: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(token.encodeToByteArray())
+        return Base64.getEncoder().encodeToString(hashBytes)
     }
 }
