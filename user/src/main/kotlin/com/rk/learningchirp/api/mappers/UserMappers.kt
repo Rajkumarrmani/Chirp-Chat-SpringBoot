@@ -6,8 +6,8 @@ import com.rk.learningchirp.domain.model.AuthenticatedUser
 import com.rk.learningchirp.domain.model.User
 
 
-fun AuthenticatedUser.toAuthenticatedUserDto(): AuthenticatedUserDto  =
-     AuthenticatedUserDto(
+fun AuthenticatedUser.toAuthenticatedUserDto(): AuthenticatedUserDto =
+    AuthenticatedUserDto(
         user = user.toUserDto(),
         accessToken = accessToken,
         refreshToken = refreshToken

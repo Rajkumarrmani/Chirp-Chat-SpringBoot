@@ -1,7 +1,9 @@
 package com.rk.learningchirp.api.exception_handling
 
+import com.rk.learningchirp.domain.exception.InvalidCredentialsException
 import com.rk.learningchirp.domain.exception.InvalidTokenException
 import com.rk.learningchirp.domain.exception.UserAlreadyExistsException
+import com.rk.learningchirp.domain.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -30,6 +32,25 @@ class AuthExceptionHandler {
         "code" to "INVALID_TOKEN",
         "message" to e.message
     )
+
+    @ExceptionHandler(UserNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun onUserNotFound(
+        e: UserNotFoundException
+    ) = mapOf(
+        "code" to "USER_NOT_FOUND",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(InvalidCredentialsException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onInvalidCredentials(
+        e: InvalidCredentialsException
+    ) = mapOf(
+        "code" to "INVALID_CREDENTIALS",
+        "message" to e.message
+    )
+
 
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
