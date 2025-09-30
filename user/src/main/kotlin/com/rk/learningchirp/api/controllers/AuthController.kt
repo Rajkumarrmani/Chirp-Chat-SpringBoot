@@ -30,6 +30,7 @@ class AuthController(
         ).toUserDto()
     }
 
+    @PostMapping("/login")
     fun login(
         @RequestBody body : LoginRequest
     ) : AuthenticatedUserDto {
