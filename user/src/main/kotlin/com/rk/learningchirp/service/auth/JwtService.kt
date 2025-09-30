@@ -12,12 +12,12 @@ import kotlin.io.encoding.Base64
 
 @Service
 class JwtService(
-    @param:Value("\${jwt.secret}") private val secreteBase64: String,
+    @param:Value("\${jwt.secret}") private val secretBase64: String,
     @param:Value("\${jwt.expiration-minutes}") private val expirationMinutes: Int,
 ) {
 
     private val secreteKey = Keys.hmacShaKeyFor(
-        Base64.decode(secreteBase64)
+        Base64.decode(secretBase64)
     )
 
     private val accessTokenValidityMs = expirationMinutes * 60 * 1000L
