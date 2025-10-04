@@ -1,9 +1,6 @@
 package com.rk.learningchirp.api.controllers
 
-import com.rk.learningchirp.api.dto.AuthenticatedUserDto
-import com.rk.learningchirp.api.dto.LoginRequest
-import com.rk.learningchirp.api.dto.RegisterRequest
-import com.rk.learningchirp.api.dto.UserDto
+import com.rk.learningchirp.api.dto.*
 import com.rk.learningchirp.api.mappers.toAuthenticatedUserDto
 import com.rk.learningchirp.api.mappers.toUserDto
 import com.rk.learningchirp.service.auth.AuthService
@@ -32,11 +29,20 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(
-        @RequestBody body : LoginRequest
-    ) : AuthenticatedUserDto {
+        @RequestBody body: LoginRequest
+    ): AuthenticatedUserDto {
         return authService.login(
             email = body.email,
             password = body.password
         ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(
+        @RequestBody body: RefreshRequest
+    ): AuthenticatedUserDto {
+        return authService
+            .refresh(body.refreshToken)
+            .toAuthenticatedUserDto()
     }
 }
