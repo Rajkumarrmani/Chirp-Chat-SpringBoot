@@ -37,6 +37,11 @@ jwt:
   secret: ${JWT_SECRET_BASE64}
 
 
+chirp:
+  email:
+    verification:
+      expiry-hours: 24
+
 
 
 #postgresql://postgres:[YOUR-PASSWORD]@db:owouphybakizmrvkgtsb:supabase:co:5432/postgres:
