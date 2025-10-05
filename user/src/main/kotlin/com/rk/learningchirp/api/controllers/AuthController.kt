@@ -4,16 +4,15 @@ import com.rk.learningchirp.api.dto.*
 import com.rk.learningchirp.api.mappers.toAuthenticatedUserDto
 import com.rk.learningchirp.api.mappers.toUserDto
 import com.rk.learningchirp.service.auth.AuthService
+import com.rk.learningchirp.service.auth.EmailVerificationService
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val emailVerificationService: EmailVerificationService,
 ) {
 
     @PostMapping("/register")
@@ -51,5 +50,12 @@ class AuthController(
         @RequestBody body: RefreshRequest
     ) {
         authService.logout(body.refreshToken)
+    }
+
+    @GetMapping("/verify")
+    fun verifyEmail(
+        @RequestParam token: String
+    ) {
+        emailVerificationService.verifyEmail(token)
     }
 }
