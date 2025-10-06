@@ -42,6 +42,9 @@ chirp:
     verification:
       expiry-hours: 24
 
+    reset-password:
+      expiry-minutes: 30
+
 
 
 #postgresql://postgres:[YOUR-PASSWORD]@db:owouphybakizmrvkgtsb:supabase:co:5432/postgres:
