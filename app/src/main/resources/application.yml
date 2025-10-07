@@ -2,13 +2,21 @@ spring:
   application:
     name: LearningChirp
 
+
+  data:
+    redis:
+      host: "redis-17335.c212.ap-south-1-1.ec2.redns.redis-cloud.com"
+      password: ${REDIS_PASSWORD}
+      username: "default"
+      port: 17335
+      connect-timeout: 5000ms
+      timeout: 2000ms
+
   datasource:
     url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres
     username: postgres.owouphybakizmrvkgtsb
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
-
 
     hikari:
       maximum-pool-size: 10
