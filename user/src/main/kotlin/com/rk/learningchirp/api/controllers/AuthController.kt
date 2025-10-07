@@ -3,6 +3,7 @@ package com.rk.learningchirp.api.controllers
 import com.rk.learningchirp.api.dto.*
 import com.rk.learningchirp.api.mappers.toAuthenticatedUserDto
 import com.rk.learningchirp.api.mappers.toUserDto
+import com.rk.learningchirp.service.PasswordResetService
 import com.rk.learningchirp.service.auth.AuthService
 import com.rk.learningchirp.service.auth.EmailVerificationService
 import jakarta.validation.Valid
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 class AuthController(
     private val authService: AuthService,
     private val emailVerificationService: EmailVerificationService,
+    private val passwordResetService: PasswordResetService,
 ) {
 
     @PostMapping("/register")
@@ -58,4 +60,30 @@ class AuthController(
     ) {
         emailVerificationService.verifyEmail(token)
     }
+
+    @PostMapping("/forget-password")
+    fun forgetPassword(
+        @Valid @RequestBody body: EmailRequest
+    ) {
+        passwordResetService.requestPasswordReset(body.email)
+    }
+
+    @PostMapping("/reset-password")
+    fun resetPassword(
+        @Valid @RequestBody body: ResetPasswordRequest
+    ) {
+        passwordResetService.resetPassword(
+            token = body.token,
+            newPassword = body.newPassword,
+        )
+    }
+
+    @PostMapping("change-password")
+    fun changePassword(
+        @Valid @RequestBody body: ChangePasswordRequest
+    ) {
+
+    }
+
+
 }
