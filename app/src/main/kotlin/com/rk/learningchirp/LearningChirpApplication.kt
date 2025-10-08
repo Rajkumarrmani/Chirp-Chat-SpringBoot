@@ -1,4 +1,4 @@
-package com.rk.learningchirpw22ww
+package com.rk.learningchirp
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
