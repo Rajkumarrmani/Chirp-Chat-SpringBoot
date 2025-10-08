@@ -3,6 +3,7 @@ package com.rk.learningchirp.api.controllers
 import com.rk.learningchirp.api.dto.*
 import com.rk.learningchirp.api.mappers.toAuthenticatedUserDto
 import com.rk.learningchirp.api.mappers.toUserDto
+import com.rk.learningchirp.infra.rate_limiting.EmailRateLimiter
 import com.rk.learningchirp.service.PasswordResetService
 import com.rk.learningchirp.service.auth.AuthService
 import com.rk.learningchirp.service.auth.EmailVerificationService
@@ -15,6 +16,7 @@ class AuthController(
     private val authService: AuthService,
     private val emailVerificationService: EmailVerificationService,
     private val passwordResetService: PasswordResetService,
+    private val emailRateLimiter: EmailRateLimiter
 ) {
 
     @PostMapping("/register")
@@ -85,5 +87,14 @@ class AuthController(
 
     }
 
+
+    @PostMapping("/reset-verification")
+    fun resetVerification(
+        @Valid @RequestBody body: EmailRequest
+    ) {
+        emailRateLimiter.withRateLimit(email = body.email) {
+            emailVerificationService.resetVerificationEmail(body.email)
+        }
+    }
 
 }

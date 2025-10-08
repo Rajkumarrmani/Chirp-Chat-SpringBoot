@@ -97,4 +97,8 @@ class EmailVerificationService(
         )
     }
 
+    fun resetVerificationEmail(email: String) {
+        // TODO : Trigger resend
+    }
+
 }
