@@ -1,4 +1,4 @@
-package com.rk.learningchirp.service.auth
+package com.rk.learningchirp.service
 
 import com.rk.learningchirp.domain.exception.*
 import com.rk.learningchirp.domain.model.AuthenticatedUser
@@ -10,6 +10,8 @@ import com.rk.learningchirp.infra.database.mappers.toUser
 import com.rk.learningchirp.infra.database.repositories.RefreshTokenRepository
 import com.rk.learningchirp.infra.database.repositories.UserRepository
 import com.rk.learningchirp.infra.security.PasswordEncoder
+import com.rk.learningchirp.service.auth.EmailVerificationService
+import com.rk.learningchirp.service.auth.JwtService
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

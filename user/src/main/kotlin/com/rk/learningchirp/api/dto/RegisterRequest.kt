@@ -17,5 +17,6 @@ data class RegisterRequest(
 
 
     @field:Password
+    @JsonProperty("password")
     val password: String
 )

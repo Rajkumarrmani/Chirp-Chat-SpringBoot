@@ -2,13 +2,12 @@ spring:
   application:
     name: LearningChirp
 
-
   data:
     redis:
-      host: "redis-17335.c212.ap-south-1-1.ec2.redns.redis-cloud.com"
+      host: "redis-12830.crce206.ap-south-1-1.ec2.redns.redis-cloud.com"
       password: ${REDIS_PASSWORD}
       username: "default"
-      port: 17335
+      port: 12830
       connect-timeout: 5000ms
       timeout: 2000ms
 
@@ -52,6 +51,14 @@ chirp:
 
     reset-password:
       expiry-minutes: 30
+
+
+nginx:
+  trusted-ips:
+    - "127.0.0.1" # nginx on same machine
+    - "::1" # IPv6 localhost
+    - "172.17.0.0/16" # nginx container IP when using Docker
+    - "10.0.0.5/32" # nginx server IP (if separate machine)
 
 
 
