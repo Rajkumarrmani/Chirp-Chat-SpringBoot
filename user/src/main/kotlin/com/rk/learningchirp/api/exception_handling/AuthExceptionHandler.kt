@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @RestControllerAdvice
 class AuthExceptionHandler {
@@ -72,6 +73,15 @@ class AuthExceptionHandler {
                 )
             )
     }
+
+    @ExceptionHandler(UnauthorizedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onUnauthorized(
+        e: UnauthorizedException
+    ) = mapOf(
+        "code" to "UNAUTHORIZED",
+        "message" to e.message
+    )
 
 
     @ExceptionHandler(SamePasswordException::class)

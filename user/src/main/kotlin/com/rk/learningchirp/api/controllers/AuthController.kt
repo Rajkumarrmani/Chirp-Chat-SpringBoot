@@ -3,6 +3,7 @@ package com.rk.learningchirp.api.controllers
 import com.rk.learningchirp.api.dto.*
 import com.rk.learningchirp.api.mappers.toAuthenticatedUserDto
 import com.rk.learningchirp.api.mappers.toUserDto
+import com.rk.learningchirp.api.util.requestUserId
 import com.rk.learningchirp.infra.config.IpRateLimit
 import com.rk.learningchirp.infra.rate_limiting.EmailRateLimiter
 import com.rk.learningchirp.service.PasswordResetService
@@ -116,7 +117,11 @@ class AuthController(
     fun changePassword(
         @Valid @RequestBody body: ChangePasswordRequest
     ) {
-
+        passwordResetService.changePassword(
+            userId = requestUserId,
+            oldPassword = body.oldPassword,
+            newPassword = body.newPassword,
+        )
     }
 
 
