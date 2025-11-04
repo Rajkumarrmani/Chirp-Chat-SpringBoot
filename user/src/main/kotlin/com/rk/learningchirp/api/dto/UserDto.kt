@@ -1,6 +1,6 @@
 package com.rk.learningchirp.api.dto
 
-import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.domain.type.UserId
 
 data class UserDto(
     val id: UserId,

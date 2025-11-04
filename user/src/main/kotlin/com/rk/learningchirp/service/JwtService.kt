@@ -1,7 +1,7 @@
 package com.rk.learningchirp.service.auth
 
 import com.rk.learningchirp.domain.exception.InvalidTokenException
-import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.domain.type.UserId
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

@@ -3,7 +3,7 @@ package com.rk.learningchirp.domain.model
 import java.util.UUID
 
 
-typealias UserId = UUID
+
 
 // Password no need to return to user so here no need to add it
 data class User(

@@ -1,7 +1,7 @@
 package com.rk.learningchirp.api.util
 
 import com.rk.learningchirp.domain.exception.UnauthorizedException
-import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.domain.type.UserId
 import org.springframework.security.core.context.SecurityContextHolder
 
 val requestUserId : UserId get() =

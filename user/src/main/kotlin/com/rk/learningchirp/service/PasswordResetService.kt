@@ -4,7 +4,7 @@ import com.rk.learningchirp.domain.exception.InvalidCredentialsException
 import com.rk.learningchirp.domain.exception.InvalidTokenException
 import com.rk.learningchirp.domain.exception.SamePasswordException
 import com.rk.learningchirp.domain.exception.UserNotFoundException
-import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.domain.type.UserId
 import com.rk.learningchirp.infra.database.entities.PasswordResetTokenEntity
 import com.rk.learningchirp.infra.database.repositories.PasswordResetTokenRepository
 import com.rk.learningchirp.infra.database.repositories.RefreshTokenRepository

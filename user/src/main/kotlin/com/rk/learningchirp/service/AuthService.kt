@@ -3,7 +3,7 @@ package com.rk.learningchirp.service
 import com.rk.learningchirp.domain.exception.*
 import com.rk.learningchirp.domain.model.AuthenticatedUser
 import com.rk.learningchirp.domain.model.User
-import com.rk.learningchirp.domain.model.UserId
+import com.rk.learningchirp.domain.type.UserId
 import com.rk.learningchirp.infra.database.entities.RefreshTokenEntity
 import com.rk.learningchirp.infra.database.entities.UserEntity
 import com.rk.learningchirp.infra.database.mappers.toUser
