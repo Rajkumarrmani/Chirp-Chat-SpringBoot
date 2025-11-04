@@ -1,4 +1,4 @@
-package com.rk.learningchirp.service
+import com.rk.learningchirp.domain.events.user.UserEvents
 
 import com.rk.learningchirp.domain.exception.*
 import com.rk.learningchirp.domain.model.AuthenticatedUser
@@ -9,6 +9,7 @@ import com.rk.learningchirp.infra.database.entities.UserEntity
 import com.rk.learningchirp.infra.database.mappers.toUser
 import com.rk.learningchirp.infra.database.repositories.RefreshTokenRepository
 import com.rk.learningchirp.infra.database.repositories.UserRepository
+import com.rk.learningchirp.infra.message_queue.EventPublisher
 import com.rk.learningchirp.infra.security.PasswordEncoder
 import com.rk.learningchirp.service.auth.EmailVerificationService
 import com.rk.learningchirp.service.auth.JwtService
@@ -28,6 +29,7 @@ class AuthService(
     private val jwtService: JwtService,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val emailVerificationService: EmailVerificationService,
+    private val eventPublisher: EventPublisher,
 ) {
     @Transactional
     fun register(email: String, username: String, password: String): User {
@@ -52,6 +54,15 @@ class AuthService(
 
         val token = emailVerificationService.createVerificationToken(trimmedEmail)
 
+        eventPublisher.publish(
+            event = UserEvents.Created(
+                userId = savedUser.id,
+                email = savedUser.email,
+                userName = savedUser.username,
+                verificationToken = token.token
+            )
+        )
+
         return savedUser
     }
 
@@ -66,7 +77,7 @@ class AuthService(
             throw InvalidCredentialsException()
         }
 
-        if(!user.hasVerifiedEmail) {
+        if (!user.hasVerifiedEmail) {
             throw EmailNotVerifiedException()
         }
 

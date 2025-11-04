@@ -1,5 +1,6 @@
 package com.rk.learningchirp.service.auth
 
+import com.rk.learningchirp.domain.events.user.UserEvents
 import com.rk.learningchirp.domain.exception.InvalidTokenException
 import com.rk.learningchirp.domain.exception.UserNotFoundException
 import com.rk.learningchirp.domain.model.EmailVerificationToken
@@ -8,6 +9,7 @@ import com.rk.learningchirp.infra.database.mappers.toEmailVerificationToken
 import com.rk.learningchirp.infra.database.mappers.toUser
 import com.rk.learningchirp.infra.database.repositories.EmailVerificationTokenRepository
 import com.rk.learningchirp.infra.database.repositories.UserRepository
+import com.rk.learningchirp.infra.message_queue.EventPublisher
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -20,7 +22,8 @@ class EmailVerificationService(
     private val emailVerificationTokenRepository: EmailVerificationTokenRepository,
     private val userRepository: UserRepository,
     @param:Value("\${chirp.email.verification.expiry-hours}")
-    private val expiryHours: Long
+    private val expiryHours: Long,
+    private val eventPublisher: EventPublisher
 ) {
 
     @Transactional
@@ -97,8 +100,20 @@ class EmailVerificationService(
         )
     }
 
+    @Transactional
     fun resetVerificationEmail(email: String) {
-        // TODO : Trigger resend
-    }
+        val token = createVerificationToken(email)
+
+        if(token.user.hasEmailVerified) return
+
+        eventPublisher.publish(
+            event = UserEvents.RequestResendVerification(
+                userId = token.user.id,
+                email = token.user.email,
+                userName = token.user.username,
+                verificationToken = token.token
+            )
+        )
+     }
 
 }
